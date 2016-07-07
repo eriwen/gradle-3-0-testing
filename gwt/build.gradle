@@ -1,0 +1,24 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
+    }
+}
+apply plugin: 'war'
+apply plugin: 'gwt'
+
+import de.richsource.gradle.plugins.gwt.Style;
+
+repositories {
+  jcenter()
+}
+
+gwt {
+  gwtVersion = '2.7.0'
+  modules 'org.gradle.mywebapp.MyWebApp'
+  compiler {
+    style = Style.OBF
+  }
+}
