@@ -1,0 +1,46 @@
+buildscript {
+    ext {
+        springBootVersion = '1.3.3.RELEASE'
+    }
+
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "com.eriwen:gradle-js-plugin:2.14.1"
+    }
+}
+plugins {
+    id 'com.gradle.build-scan' version '1.0'
+}
+
+apply plugin: "com.eriwen.gradle.js"
+
+repositories {
+    mavenCentral()
+}
+
+javascript.source {
+    dev {
+        js {
+            srcDir "admin/src/main/resources/static/js"
+            include "**/*.js"
+            exclude "admin/src/main/resources/static/js/lib"
+        }
+    }
+}
+
+jshint {
+    tasks.jshint.source = javascript.source.dev.js.files
+    tasks.jshint.dest = file("${buildDir}/jshint.out")
+    tasks.jshint.reporter = 'checkstyle'
+    jshint.options = [expr: "true", unused: "true"]
+}
+
+buildScan {
+    licenseAgreementUrl = 'https://gradle.com/terms-of-service'
+    licenseAgree = 'yes'
+}
+
